@@ -1,0 +1,47 @@
+services:
+  db:
+    container_name: postgres
+    image: postgres:17.1
+    ports:
+      - 5433:5432
+    env_file:
+      - .env
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U tarasPG']
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    restart: always
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - be
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4:8
+    ports:
+      - '5050:80'
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ['CMD-SHELL', 'curl -f http://localhost/pgadmin4']
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    restart: unless-stopped
+    volumes:
+      - pgadmin_data:/var/lib/postgresql/data
+    networks:
+      - be
+
+networks:
+  be:
+    driver: bridge
+
+volumes:
+  db_data:
+  pgadmin_data:
