@@ -1,0 +1,22 @@
+model Organization {
+  id Int @id @default(autoincrement())
+
+  name              String  @unique @db.VarChar(255)
+  nameLocKey        String? @unique @map("name_loc_key") @db.VarChar(55)
+  displayName       String? @map("display_name")
+  displayNameLocKey String? @unique @map("display_name_loc_key") @db.VarChar(55)
+  address           String  @db.VarChar(255)
+  addressLocKey     String? @map("address_loc_key") @db.VarChar(55)
+  phone             String  @db.VarChar(255)
+  email             String  @unique @db.VarChar(255)
+
+  units    Unit[]
+  users    User[]
+  roles    Role[]
+  permissions Permission[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  @@map("organization")
+}

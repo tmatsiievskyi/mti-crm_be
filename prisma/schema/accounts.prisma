@@ -1,0 +1,18 @@
+model Account {
+  id Int @id @default(autoincrement())
+
+  type     String
+  provider String
+
+  refreshToken String? @map("refresh_token")
+  accessToken  String? @map("access_token")
+  expiresAt    Int     @map("expires_at")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  user   User? @relation(fields: [userId], references: [id])
+  userId Int?   @map("user_id")
+
+  @@map("account")
+}
