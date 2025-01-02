@@ -1,0 +1,22 @@
+model Unit {
+  id Int @id @default(autoincrement())
+
+  name       String  @db.VarChar(255)
+  nameLocKey String? @map("name_loc_key") @db.VarChar(55)
+
+  parentUnit   Unit? @relation("UnitHierarchy", fields: [parentUnitId], references: [id])
+  parentUnitId Int?
+
+  childUnits Unit[] @relation("UnitHierarchy")
+
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  organizationId Int
+
+  users User[]
+  roles Role[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  @@map("unit")
+}

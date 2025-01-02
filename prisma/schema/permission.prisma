@@ -1,0 +1,22 @@
+model Permission {
+  id         Int     @id @default(autoincrement())
+  name       String  @db.VarChar(255)
+  nameLocKey String? @map("name_loc_key") @db.VarChar(55)
+
+  effect     String   @db.VarChar(55)
+  actions    String[]
+  resources  String[]
+  conditions Json?
+
+  users User[]
+  roles Role[]
+
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  organizationId Int           @map("organization_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  @@unique([name, organizationId], name: "idx_policy_name_organizationId")
+  @@map("policy")
+}

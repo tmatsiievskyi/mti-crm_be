@@ -15,7 +15,7 @@ services:
     volumes:
       - db_data:/var/lib/postgresql/data
     networks:
-      - be
+      - mti-crm
 
   pgadmin:
     container_name: pgadmin
@@ -36,10 +36,10 @@ services:
     volumes:
       - pgadmin_data:/var/lib/postgresql/data
     networks:
-      - be
+      - mti-crm
 
 networks:
-  be:
+  mti-crm:
     driver: bridge
 
 volumes:

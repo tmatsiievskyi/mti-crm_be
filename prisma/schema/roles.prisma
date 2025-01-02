@@ -1,0 +1,21 @@
+model Role {
+  id Int @id @default(autoincrement())
+
+  name              String  @db.VarChar(255)
+  nameLocKey        String? @map("name_loc_key") @db.VarChar(55)
+  description       String  @db.VarChar(255)
+  descriptionLocKey String? @map("description_loc_key") @db.VarChar(55)
+
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  organizationId Int           @map("organization_id")
+
+  permissions Permission[]
+  users    User[]
+  units    Unit[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  @@unique([name, organizationId], name: "idx_role_name_organizationId")
+  @@map("role")
+}
